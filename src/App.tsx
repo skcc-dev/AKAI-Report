@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { motion } from "motion/react";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { 
   Bot, 
   Target, 
@@ -27,8 +28,17 @@ import {
   Users,
   BarChart3,
   Mic,
-  Settings
+  Settings,
+  X,
+  Send,
+  Loader2
 } from "lucide-react";
+
+declare global {
+  interface Window {
+    puter: any;
+  }
+}
 
 const SectionTitle = ({ title, icon: Icon }: { title: string; icon: any }) => (
   <motion.div 
@@ -61,7 +71,137 @@ const Card = ({ title, description, icon: Icon, delay = 0 }: { title: string; de
   </motion.div>
 );
 
+const ChatBot = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  const [messages, setMessages] = useState<{ role: 'user' | 'bot'; content: string }[]>([
+    { role: 'bot', content: 'مرحباً بك! أنا مساعد AKAI الذكي. كيف يمكنني مساعدتك اليوم؟' }
+  ]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
+
+    const userMessage = input.trim();
+    setInput('');
+    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+    setIsLoading(true);
+
+    try {
+      // Using Puter AI - No API key required
+      const response = await window.puter.ai.chat(
+        `أنت مساعد ذكي لمشروع AKAI. أجب باللغة العربية وباختصار. سؤال المستخدم: ${userMessage}`
+      );
+      
+      const botResponse = typeof response === 'string' ? response : response?.toString() || "عذراً، حدث خطأ في التواصل.";
+      setMessages(prev => [...prev, { role: 'bot', content: botResponse }]);
+    } catch (error) {
+      console.error('Error calling Puter AI:', error);
+      setMessages(prev => [...prev, { role: 'bot', content: "عذراً، لا يمكنني الاتصال بالذكاء الاصطناعي حالياً." }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: 100, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 100, scale: 0.9 }}
+          className="fixed bottom-24 right-6 w-[90vw] md:w-[400px] h-[500px] bg-white rounded-3xl shadow-2xl border border-blue-100 z-50 flex flex-col overflow-hidden"
+          dir="rtl"
+        >
+          {/* Header */}
+          <div className="p-4 bg-blue-600 text-white flex justify-between items-center shadow-lg">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                <Bot size={24} />
+              </div>
+              <div>
+                <h4 className="font-bold">مساعد AKAI</h4>
+                <div className="flex items-center gap-2 text-[10px] text-blue-100">
+                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+                  متصل الآن
+                </div>
+              </div>
+            </div>
+            <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Messages */}
+          <div ref={scrollRef} className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50">
+            {messages.map((msg, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: msg.role === 'user' ? 20 : -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className={`flex ${msg.role === 'user' ? 'justify-start' : 'justify-end'}`}
+              >
+                <div className={`max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed ${
+                  msg.role === 'user' 
+                    ? 'bg-blue-600 text-white rounded-tr-none shadow-md' 
+                    : 'bg-white text-slate-800 border border-slate-200 rounded-tl-none shadow-sm'
+                }`}>
+                  {msg.content}
+                </div>
+              </motion.div>
+            ))}
+            {isLoading && (
+              <div className="flex justify-end">
+                <div className="bg-white border border-slate-200 p-3 rounded-2xl rounded-tl-none flex gap-2 items-center shadow-sm">
+                  <div className="flex gap-1">
+                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Input */}
+          <div className="p-4 bg-white border-t border-slate-100">
+            <div className="relative">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                placeholder="اكتب رسالتك هنا..."
+                className="w-full pl-12 pr-4 py-4 bg-slate-100 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none text-sm transition-all"
+              />
+              <button
+                onClick={handleSend}
+                disabled={isLoading || !input.trim()}
+                className="absolute left-2 top-2 p-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-all shadow-md active:scale-95"
+              >
+                <Send size={20} />
+              </button>
+            </div>
+            <p className="text-[10px] text-center text-slate-400 mt-3">
+              يعمل بواسطة ذكاء AKAI الاصطناعي (Puter.js)
+            </p>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+
 export default function App() {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900" dir="rtl">
       {/* Hero Section */}
@@ -91,6 +231,7 @@ export default function App() {
             
             <div className="flex flex-wrap justify-center gap-4">
               <motion.button 
+                onClick={() => setIsChatOpen(true)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-4 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 flex items-center gap-2"
@@ -110,6 +251,20 @@ export default function App() {
           </motion.div>
         </div>
       </header>
+
+      {/* Floating Chat Button */}
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setIsChatOpen(!isChatOpen)}
+        className="fixed bottom-6 right-6 w-16 h-16 bg-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center z-50 hover:bg-blue-700 transition-colors"
+      >
+        {isChatOpen ? <X size={32} /> : <MessageSquare size={32} />}
+      </motion.button>
+
+      {/* Chat Bot Interface */}
+      <ChatBot isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+
 
       <main className="max-w-6xl mx-auto px-6 py-20 space-y-32">
         
