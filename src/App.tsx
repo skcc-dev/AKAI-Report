@@ -496,6 +496,9 @@ export default function App() {
             <a href="https://docs.puter.com/v2" target="_blank" className="text-slate-500 hover:text-blue-600 transition-colors flex items-center gap-1 text-sm font-medium">
               <ExternalLink size={18} /> Puter Docs
             </a>
+            <a href="https://nodejs.org/en" target="_blank" className="text-slate-500 hover:text-blue-600 transition-colors flex items-center gap-1 text-sm font-medium">
+              <ExternalLink size={18} /> Node.js Docs
+            </a>
           </div>
 
           <p className="text-slate-400 text-xs">© 2026 مشروع AKAI - جميع الحقوق محفوظة</p>
