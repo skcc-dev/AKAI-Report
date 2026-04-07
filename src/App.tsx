@@ -5,18 +5,18 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  Bot, 
-  Target, 
-  Cpu, 
-  Database, 
-  MessageSquare, 
-  Search, 
-  Zap, 
-  Layers, 
-  Code, 
-  TrendingUp, 
-  CheckCircle2, 
+import {
+  Bot,
+  Target,
+  Cpu,
+  Database,
+  MessageSquare,
+  Search,
+  Zap,
+  Layers,
+  Code,
+  TrendingUp,
+  CheckCircle2,
   ArrowRight,
   Github,
   Globe,
@@ -41,7 +41,7 @@ declare global {
 }
 
 const SectionTitle = ({ title, icon: Icon }: { title: string; icon: any }) => (
-  <motion.div 
+  <motion.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
@@ -98,7 +98,7 @@ const ChatBot = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
       const response = await window.puter.ai.chat(
         `أنت مساعد ذكي لمشروع AKAI. أجب باللغة العربية وباختصار. سؤال المستخدم: ${userMessage}`
       );
-      
+
       const botResponse = typeof response === 'string' ? response : response?.toString() || "عذراً، حدث خطأ في التواصل.";
       setMessages(prev => [...prev, { role: 'bot', content: botResponse }]);
     } catch (error) {
@@ -147,11 +147,10 @@ const ChatBot = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
                 animate={{ opacity: 1, x: 0 }}
                 className={`flex ${msg.role === 'user' ? 'justify-start' : 'justify-end'}`}
               >
-                <div className={`max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed ${
-                  msg.role === 'user' 
-                    ? 'bg-blue-600 text-white rounded-tr-none shadow-md' 
-                    : 'bg-white text-slate-800 border border-slate-200 rounded-tl-none shadow-sm'
-                }`}>
+                <div className={`max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed ${msg.role === 'user'
+                  ? 'bg-blue-600 text-white rounded-tr-none shadow-md'
+                  : 'bg-white text-slate-800 border border-slate-200 rounded-tl-none shadow-sm'
+                  }`}>
                   {msg.content}
                 </div>
               </motion.div>
@@ -210,9 +209,9 @@ export default function App() {
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600 rounded-full blur-[120px]" />
           <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600 rounded-full blur-[120px]" />
         </div>
-        
+
         <div className="max-w-6xl mx-auto px-6 relative z-10">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
@@ -228,14 +227,14 @@ export default function App() {
             <p className="max-w-2xl mx-auto text-lg text-slate-600 leading-relaxed mb-10">
               نظام ذكي يعتمد على قاعدة معرفة منظمة للإجابة عن أسئلة المستخدمين بشكل سريع ودقيق، مما يقلل الجهد المبذول في الرد على الاستفسارات المتكررة.
             </p>
-            
+
             <div className="flex flex-wrap justify-center gap-4">
-              <a 
+              <a
                 href="https://akai-one.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <motion.button 
+                <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-8 py-4 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 flex items-center gap-2"
@@ -244,12 +243,12 @@ export default function App() {
                   عرض التجربة الحية
                 </motion.button>
               </a>
-              <a 
-                href="https://github.com/skcc-dev/AKAI-Report"
+              <a
+                href="https://github.com/skcc-dev/AKAI"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <motion.button 
+                <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-8 py-4 bg-white text-slate-700 border border-slate-200 rounded-xl font-bold shadow-sm flex items-center gap-2"
@@ -278,33 +277,33 @@ export default function App() {
 
 
       <main className="max-w-6xl mx-auto px-6 py-20 space-y-32">
-        
+
         {/* Goals Section */}
         <section id="goals">
           <SectionTitle title="أهداف المشروع" icon={Target} />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card 
-              title="إجابات آلية" 
-              description="تقديم إجابات فورية ودقيقة على الأسئلة الشائعة والمتكررة." 
-              icon={MessageSquare} 
+            <Card
+              title="إجابات آلية"
+              description="تقديم إجابات فورية ودقيقة على الأسئلة الشائعة والمتكررة."
+              icon={MessageSquare}
               delay={0.1}
             />
-            <Card 
-              title="الوصول للمعرفة" 
-              description="تحسين إمكانية الوصول إلى المعلومات المخزنة في قاعدة البيانات." 
-              icon={Search} 
+            <Card
+              title="الوصول للمعرفة"
+              description="تحسين إمكانية الوصول إلى المعلومات المخزنة في قاعدة البيانات."
+              icon={Search}
               delay={0.2}
             />
-            <Card 
-              title="تقليل العبء" 
-              description="تخفيف الضغط على فرق الدعم الفني من خلال أتمتة الردود." 
-              icon={Zap} 
+            <Card
+              title="تقليل العبء"
+              description="تخفيف الضغط على فرق الدعم الفني من خلال أتمتة الردود."
+              icon={Zap}
               delay={0.3}
             />
-            <Card 
-              title="تجربة المستخدم" 
-              description="تعزيز التفاعل من خلال واجهة ذكية وسهلة الاستخدام." 
-              icon={Users} 
+            <Card
+              title="تجربة المستخدم"
+              description="تعزيز التفاعل من خلال واجهة ذكية وسهلة الاستخدام."
+              icon={Users}
               delay={0.4}
             />
           </div>
@@ -364,7 +363,7 @@ export default function App() {
             <h2 className="text-3xl font-black mb-4">سير عمل النظام</h2>
             <p className="text-blue-100 max-w-xl mx-auto">كيف تتم معالجة سؤال المستخدم وتحويله إلى إجابة ذكية؟</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative z-10">
             {[
               { step: "01", title: "إرسال السؤال", desc: "المستخدم يرسل استفساره عبر الدردشة", icon: MessageSquare },
@@ -373,7 +372,7 @@ export default function App() {
               { step: "04", title: "المعالجة", desc: "الذكاء الاصطناعي يولد الاستجابة", icon: Cpu },
               { step: "05", title: "الإجابة", desc: "إرسال الرد النهائي للمستخدم", icon: CheckCircle2 },
             ].map((item, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -408,7 +407,7 @@ export default function App() {
               { name: "Vercel", color: "bg-black text-white" },
               { name: "GitHub", color: "bg-slate-800 text-white" },
             ].map((tech, idx) => (
-              <motion.span 
+              <motion.span
                 key={idx}
                 whileHover={{ scale: 1.1 }}
                 className={`px-6 py-3 rounded-full font-bold text-sm shadow-sm ${tech.color}`}
@@ -470,8 +469,8 @@ export default function App() {
         <section className="text-center py-20 border-t border-slate-200">
           <h2 className="text-3xl font-black text-slate-900 mb-6">الخاتمة</h2>
           <p className="max-w-3xl mx-auto text-slate-600 leading-relaxed">
-            يمثل مشروع AKAI نموذجاً عملياً لتطبيق تقنيات الذكاء الاصطناعي في مجال إدارة المعرفة وتقديم الدعم الذكي. 
-            يساهم هذا النظام في تحسين كفاءة الوصول إلى المعلومات وتقليل الاعتماد على الطرق التقليدية، 
+            يمثل مشروع AKAI نموذجاً عملياً لتطبيق تقنيات الذكاء الاصطناعي في مجال إدارة المعرفة وتقديم الدعم الذكي.
+            يساهم هذا النظام في تحسين كفاءة الوصول إلى المعلومات وتقليل الاعتماد على الطرق التقليدية،
             مما يعزز التحول الرقمي ويحسن عمليات التواصل بطريقة أكثر كفاءة ومرونة.
           </p>
         </section>
@@ -486,9 +485,9 @@ export default function App() {
             </div>
             <span className="text-xl font-black text-slate-900 tracking-tight">AKAI Project</span>
           </div>
-          
+
           <div className="flex gap-6">
-            <a href="https://github.com/skcc-dev/AKAI-Report" target="_blank" className="text-slate-500 hover:text-blue-600 transition-colors flex items-center gap-1 text-sm font-medium">
+            <a href="https://github.com/skcc-dev/AKAI" target="_blank" className="text-slate-500 hover:text-blue-600 transition-colors flex items-center gap-1 text-sm font-medium">
               <Github size={18} /> GitHub
             </a>
             <a href="https://akai-one.vercel.app/" target="_blank" className="text-slate-500 hover:text-blue-600 transition-colors flex items-center gap-1 text-sm font-medium">
@@ -498,7 +497,7 @@ export default function App() {
               <ExternalLink size={18} /> Puter Docs
             </a>
           </div>
-          
+
           <p className="text-slate-400 text-xs">© 2026 مشروع AKAI - جميع الحقوق محفوظة</p>
         </div>
       </footer>
