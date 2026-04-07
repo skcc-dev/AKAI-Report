@@ -236,17 +236,23 @@ export default function App() {
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-4 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 flex items-center gap-2"
               >
-                <Globe size={20} />
+                <MessageSquare size={20} />
                 عرض التجربة الحية
               </motion.button>
-              <motion.button 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-white text-slate-700 border border-slate-200 rounded-xl font-bold shadow-sm flex items-center gap-2"
+              <a 
+                href="https://github.com/skcc-dev/AKAI-Report"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <Github size={20} />
-                المستودع البرمجي
-              </motion.button>
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-white text-slate-700 border border-slate-200 rounded-xl font-bold shadow-sm flex items-center gap-2"
+                >
+                  <Github size={20} />
+                  المستودع البرمجي
+                </motion.button>
+              </a>
             </div>
           </motion.div>
         </div>
@@ -477,13 +483,16 @@ export default function App() {
           </div>
           
           <div className="flex gap-6">
-            <a href="https://github.com/skcc-dev/AKAI.git" target="_blank" className="text-slate-500 hover:text-blue-600 transition-colors flex items-center gap-1 text-sm font-medium">
+            <a href="https://github.com/skcc-dev/AKAI-Report" target="_blank" className="text-slate-500 hover:text-blue-600 transition-colors flex items-center gap-1 text-sm font-medium">
               <Github size={18} /> GitHub
             </a>
-            <a href="https://akai-one.vercel.app/" target="_blank" className="text-slate-500 hover:text-blue-600 transition-colors flex items-center gap-1 text-sm font-medium">
-              <Globe size={18} /> Vercel Demo
-            </a>
-            <a href="https://docs.puter.com/" target="_blank" className="text-slate-500 hover:text-blue-600 transition-colors flex items-center gap-1 text-sm font-medium">
+            <button 
+              onClick={() => setIsChatOpen(true)}
+              className="text-slate-500 hover:text-blue-600 transition-colors flex items-center gap-1 text-sm font-medium"
+            >
+              <Sparkles size={18} /> التجربة الحية
+            </button>
+            <a href="https://docs.puter.com/v2" target="_blank" className="text-slate-500 hover:text-blue-600 transition-colors flex items-center gap-1 text-sm font-medium">
               <ExternalLink size={18} /> Puter Docs
             </a>
           </div>
